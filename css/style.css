@@ -1,4 +1,45 @@
+body {
+    margin: 0px;
+    overflow: hidden;
+}
+
 #iceland {
     z-index: 1;
     
+}
+
+#select-songs{
+    top: 50px;
+    left: 50px;
+    z-index: 2;
+    position: absolute;
+    color: rgb(112, 112, 112);
+    font-weight: 100;
+    font-family:'Gill Sans';
+    border: 1px solid white;
+    border-radius: 10px;
+    padding: 20px;
+    background: white;
+    opacity: 0.0;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+#song-names{
+    margin-top: 10px;
+    font-family: 'Josefin Slab';
+    border: none;
+    border-radius: 10px;
+    background: none;
+    color: rgb(112, 112, 112);
+    font-weight: 600;
+    height: 30px;
+    font-size: 24px;
+    opacity: 1.0;
+}
+
+option{
+    color: rgb(112, 112, 112);
+    font-size: 18px;
+    padding: 10px;
 }

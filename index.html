@@ -9,16 +9,28 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Slab:ital,wght@0,200;0,300;1,200;1,300&display=swap" rel="stylesheet">
 
 </head>
 <body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/p5.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/addons/p5.dom.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/addons/p5.sound.min.js"></script>
+
+    <div id = "select-songs">
+
+        <span class = "button" id = "play-button"> Play&nbsp; </span>
+        <span class = "button" id = "pause-button"> Pause </span> 
+        <br>
+        <label for="song-names">🎵</label>
+        <select name = "songs" id = "song-names">
+            <option value="0">Coldplay - Coloratura</option>
+            <option value="1">Cavetown - Meteor Shower</option>
+            <option value="2">Adam Melchor - Moon in the Morning</option>
+        </select>
+        <span id = "submit">submit</span>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.0/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.0/addons/p5.dom.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.0/addons/p5.sound.min.js"></script>
     <script src="js/main.js"></script>
-
-    
-
 </body>
 </html>

@@ -1,140 +1,113 @@
-let audio, amp, fft
-let binWidth
-let pdBass, pdLowmid, pdMid, pdHighmid, pdTreble
-let bgColor = 0
-let bins = 256
+let audio, amp, fft;
+let binWidth;
+//let pdBass, pdLowmid, pdMid, pdHighmid, pdTreble;
+let bins = 128;
 
-let subBass = [20, 80]
-let bass = [80, 250] // vocals
-let lowMid = [250, 500] // vocals
-let mid = [500, 2000] // snare drum,
-let highMid = [2000, 4000]
-let presence = [4000, 6000]
-let brilliance = [6000, 16000]
 
-let img
-let starVertex = []
+let subBass = [20, 80];
+let bass = [80, 250]; // vocals
+let lowMid = [250, 500]; // vocals
+let mid = [500, 2000];// snare drum,
+let highMid = [2000, 4000];
+let presence = [4000, 6000];
+let brilliance = [6000, 16000];
 
-let title = 'Cavetown - Meteor Shower'
+let img;
+let starVertex = [];
 
-function preload() {
-    audio = loadSound(`audio/${title}.mp3`)
-    img = loadImage('img/iceland5.png')
-    img_2 = loadImage('img/iceland3.png')
+const selectSongs = document.getElementById("select-songs");
+const playbtn = document.getElementById("play-button");
+const pausebtn = document.getElementById("pause-button");
+const submitbtn = document.getElementById("submit");
+
+const songsArr = ["Coldplay - Coloratura", "Cavetown - Meteor Shower", 
+                "Adam Melchor - Moon in the Morning"];
+
+var audioArr = [];
+var width = window.innerWidth;
+var height = window.innerHeight;
+
+function preload(song) {
+    if (!song){
+        song = "Coldplay - Coloratura";
+    }
+    for (let i = 0; i < songsArr.length; i++){
+        audioArr.push(loadSound(`audio/${songsArr[i]}.mp3`));
+    }
+    audio = audioArr[0];
+
+
+    img = loadImage('img/icelanddark.png');
+    img_2 = loadImage('img/icelanddark3.png');
 }
 
 function setup() {
-    const canvas = createCanvas(1600, 900)
-    canvas.mouseClicked(togglePlay)
-    audio.amp(0.3)
-    colorMode(HSB)
-
+    playbtn.onclick = handlePlay;
+    pausebtn.onclick = handlePause;
+    submitbtn.onclick = handleSubmit;
+    const canvas = createCanvas(window.innerWidth, window.innerHeight);
+    audio.amp(0.3);
+    colorMode(HSB);
 
     // FFT
-    fft = new p5.FFT(0.7, bins)
+    fft = new p5.FFT(0.7, bins);
 
-    // peak Detect functions
-    pdBass = new p5.PeakDetect(subBass[0], subBass[1], 0.3)
-    pdBass.onPeak(bassDetected)
-
+    /* peak Detect functions
+    pdBass = new p5.PeakDetect(subBass[0], subBass[1], 0.3);
+    pdBass.onPeak(bassDetected);
+    */
+   
     // amplitude
-    amplitude = new p5.Amplitude()
+    amplitude = new p5.Amplitude();
 
     for (let i=0; i<bins; i++) {
-        let x = Math.floor(random(30, 1590))
-        let y = Math.floor(random(10, 800))
+        let x = Math.floor(random(30, width));
+        let y = Math.floor(random(10, height*0.6));
         //let z = Math.floor(random(4,5.5))
-        let z = 4
-        let vertex = [x, y, z]
-        starVertex.push(vertex)
+        let z = 4;
+        let vertex = [x, y, z];
+        starVertex.push(vertex);
     }
+
+    selectSongs.style.opacity = "0.6";
 }
 
 function draw() {
-    background(50)
-    noStroke()
+    noStroke();
 
     // get fft spectrum
-    let spectrum = fft.analyze()    
-    let level = amplitude.getLevel()
+    let spectrum = fft.analyze();
 
-    // get centroid frequency
-    //let freq = fft.getCentroid()
-    let t = map(level, 0, 0.4, 200, 230)
-    let b = map(level, 0, 0.4, 15, 33)
-
-    //const topColor = color(225, 67, 44)
-    //const bottomColor = color(225, 25, 55)
-
-    // background gradient
-    //push()
-
-    //for(let y = 0; y < height; y++) {
-    //    const lineColor = lerpColor(topColor, bottomColor, y / 1080);
-    //    stroke(lineColor);
-    //    line(0, y, 1920, y);
-    //}    
-
-    //pop()
-
-
-    //for (let i=0; i<spectrum.length; i++) {
-    //    let x = map(i, 0, spectrum.length, 0, width);
-    //    let h = -height + map(spectrum[i], 0, 255, height, 0);
-    //    rect(x, height, width/spectrum.length, h);
-    //}
-
-    //star(500, 500, 5, 25, 4)
-
-    image(img, 0, 0)
+    image(img, 0, 0, width, height);
 
     // draw stars
-    push()
+    push();
     fill(56, 20, 100)
         for (let i=0; i<spectrum.length; i++) {
-            let r = map(spectrum[i], 0, 255, 0, 8);
-            let x = starVertex[i][0]
-            let y = starVertex[i][1]
-            star(starVertex[i][0], starVertex[i][1], r/4, r, starVertex[i][2])
+            let r = map(spectrum[i], 0, 120, 0, 6);
+            star(starVertex[i][0], starVertex[i][1], r/4, r, starVertex[i][2]);
         }
-    //filter(BLUR,1)
-    pop()
+    pop();
 
-    pdBass.update(fft)
-    // get amplitude
-
-    image(img_2, 0, 0)
-    
-
-    // title
-    //push()
-    //    textSize(32);
-    //    fill(147, 41, 75);
-    //    textAlign(CENTER);
-    //    textFont('IBM Plex Serif');
-    //    text(title, 0, 70, 1920);
-    //pop()
-    //rect(500, 500, k, k)
-    // drawing objects
-    //sphere(0, 0, k)
-
+    image(img_2, 0, 0, width, height);
 }
 
-function peakDetected() {
-    console.log('Peak Detected')
-    bgColor=color(random(255))
-}
-
-function bassDetected() {
-    // bgColor=color(random(255))
-}
-
-function togglePlay() {
-    if (audio.isPlaying()){
-        audio.pause()
-    } else {
-        setTimeout(audio.loop(), 1000)
+function handlePlay(){
+    if (!audio.isPlaying()){
+        setTimeout(audio.loop(), 1000);
     }
+}
+
+function handlePause(){
+    if (audio.isPlaying()){
+        audio.pause();
+    }
+}
+
+function handleSubmit(event){
+    audio.pause();
+    audio.pauseTime = 0;
+    audio = audioArr[event.target.previousElementSibling.value];
 }
 
 function star(x, y, radius1, radius2, npoints) {
@@ -151,4 +124,4 @@ function star(x, y, radius1, radius2, npoints) {
       vertex(sx, sy);
     }
     endShape(CLOSE);
-  }
+}
